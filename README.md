@@ -1,1 +1,3 @@
-# AKA-bingo.GitHub.io
+# BinGo's Blog
+
+Welcome to my Blog.
