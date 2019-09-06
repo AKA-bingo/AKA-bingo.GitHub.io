@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>生活随笔 on BinGo&#39;s Blog</title>
+    <link>https://www.hybingo.com/tags/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/</link>
+    <description>Recent content in 生活随笔 on BinGo&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Feb 2018 22:34:47 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.hybingo.com/tags/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>你好呀，2018</title>
+      <link>https://www.hybingo.com/2018/02/%E4%BD%A0%E5%A5%BD%E5%91%802018/</link>
+      <pubDate>Thu, 22 Feb 2018 22:34:47 +0800</pubDate>
+      
+      <guid>https://www.hybingo.com/2018/02/%E4%BD%A0%E5%A5%BD%E5%91%802018/</guid>
+      <description>过去一年基本都懒得没怎么更新，新的一年要做出改变了，一些比较好的事情需要养成习惯，比如跑步、看书，记录生活的点滴吧。
+说起跑步主要是因为去年长时间对着电脑工作，周末又懒，体型隐隐有发福的迹象，其实已经在发福了。新的一年和同事约好每周都去跑步，希望能坚持下来养成一个好习惯吧。毕竟对身体也是有好处的。
+另一件事是看书。去年买了一些杂书，当然也有专业的书啦，不过基本没怎么看，目前看完的只有《宇宙简史》。新的一年每天都要抽个至少半个小时来看书吧。周末可以多点时间。平时很多时间浪费在漫无目的地上网逛视频，确实有点浪费了😭
+过去一年进步其实不大，没有系统的学习曲线和目标，自制力也不足。新的一年主要深入研究一下 Golang 以及主流框架吧，后期尽量能够用 Go 做出一些东西，外包也好自己的脑洞也罢。另外需要把学到的写下来巩固记忆，不要等用到的时候又忘记了。尽量深入地了解各种事物而不是浮于表面，不然记忆下来的东西也是十分有限。
+如果还有多余的时间的话，希望能当个天文学小迷弟哈哈哈哈哈。
+这一次过年过得是真的很纠结，差点做了一些影响自己一生的决定。不知道是一个好的开始还是坏的，但是希望以后做的决定都能够充足地思考以及让自己不后悔吧。来到深圳第五年了，隐隐有了逃离的念头，现在也要开始对以后的走向认认真真地规划而不是空想了。
+以上是2018年的 Flag，虽然全都是希望，2019年来验证一下是否变成现实吧！
+​
+ 这篇文章是无意中在以前的博客（ Git Page ）看到的。回头看看其实很多事道理都懂但是意志力不够坚强没法贯彻，迁移到目前的 Blog 中半讽刺半鞭策一下自己吧。
+ </description>
+    </item>
+    
+  </channel>
+</rss>
