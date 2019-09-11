@@ -63,4 +63,4 @@ Disallow: /
 User-agent: ZoominfoBot
 Disallow: /
 
-Sitemap: https://www.hybingo.com/sitemap.xml
+Sitemap: https://aka-bingo.github.io/sitemap.xml

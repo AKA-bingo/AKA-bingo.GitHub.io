@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MVCC on BinGo&#39;s Blog</title>
-    <link>https://www.hybingo.com/tags/mvcc/</link>
+    <link>https://aka-bingo.github.io/tags/mvcc/</link>
     <description>Recent content in MVCC on BinGo&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 25 May 2019 15:47:10 +0800</lastBuildDate>
     
-	<atom:link href="https://www.hybingo.com/tags/mvcc/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://aka-bingo.github.io/tags/mvcc/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>MySQL 多版本并发控制</title>
-      <link>https://www.hybingo.com/2019/05/mysql-%E5%A4%9A%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/</link>
+      <link>https://aka-bingo.github.io/2019/05/mysql-%E5%A4%9A%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/</link>
       <pubDate>Sat, 25 May 2019 15:47:10 +0800</pubDate>
       
-      <guid>https://www.hybingo.com/2019/05/mysql-%E5%A4%9A%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/</guid>
+      <guid>https://aka-bingo.github.io/2019/05/mysql-%E5%A4%9A%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/</guid>
       <description>什么是多版本并发控制（ MVCC ） MySQL 的大多数事务型存储引擎基于提升并发性能的考虑，一般都实现了多版本并发控制（ MVCC ）。MVCC 是行级锁的一个变种，但实际上实现机制有所不同，避免了加锁的操作，因此有了更低的开销和更高的性能。
 MVCC 的实现，是通过保持数据在某个时间点的快照来实现的，不管事务的执行时间有多久，MVCC 保障了每一个事务内看到的数据是一致的，而根据事务开始时间，不同事务看到同一张表，同一份数据可能是不同的。
 不同存储引擎对 MVCC 的实现机制不尽相同，因为 MVCC 并没有一个统一的标准，下面以 InnoDB 为例，简要介绍 MVCC 的实现原理。
