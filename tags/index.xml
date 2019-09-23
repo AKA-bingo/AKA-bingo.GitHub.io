@@ -6,17 +6,26 @@
     <description>Recent content in Tags on BinGo&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Sep 2019 20:49:19 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 17 Sep 2019 23:45:08 +0800</lastBuildDate>
     
 	<atom:link href="https://aka-bingo.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Channel</title>
-      <link>https://aka-bingo.github.io/tags/channel/</link>
-      <pubDate>Tue, 03 Sep 2019 20:49:19 +0800</pubDate>
+      <title>MySQL</title>
+      <link>https://aka-bingo.github.io/tags/mysql/</link>
+      <pubDate>Tue, 17 Sep 2019 23:45:08 +0800</pubDate>
       
-      <guid>https://aka-bingo.github.io/tags/channel/</guid>
+      <guid>https://aka-bingo.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>数据库</title>
+      <link>https://aka-bingo.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+      <pubDate>Tue, 17 Sep 2019 23:45:08 +0800</pubDate>
+      
+      <guid>https://aka-bingo.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
       <description></description>
     </item>
     
@@ -35,60 +44,6 @@
       <pubDate>Tue, 03 Sep 2019 20:49:19 +0800</pubDate>
       
       <guid>https://aka-bingo.github.io/tags/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>MVCC</title>
-      <link>https://aka-bingo.github.io/tags/mvcc/</link>
-      <pubDate>Sat, 25 May 2019 15:47:10 +0800</pubDate>
-      
-      <guid>https://aka-bingo.github.io/tags/mvcc/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>MySQL</title>
-      <link>https://aka-bingo.github.io/tags/mysql/</link>
-      <pubDate>Sat, 25 May 2019 15:47:10 +0800</pubDate>
-      
-      <guid>https://aka-bingo.github.io/tags/mysql/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>事务</title>
-      <link>https://aka-bingo.github.io/tags/%E4%BA%8B%E5%8A%A1/</link>
-      <pubDate>Sat, 25 May 2019 15:47:10 +0800</pubDate>
-      
-      <guid>https://aka-bingo.github.io/tags/%E4%BA%8B%E5%8A%A1/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>多版本并发控制</title>
-      <link>https://aka-bingo.github.io/tags/%E5%A4%9A%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/</link>
-      <pubDate>Sat, 25 May 2019 15:47:10 +0800</pubDate>
-      
-      <guid>https://aka-bingo.github.io/tags/%E5%A4%9A%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>数据库</title>
-      <link>https://aka-bingo.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
-      <pubDate>Sat, 25 May 2019 15:47:10 +0800</pubDate>
-      
-      <guid>https://aka-bingo.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>隔离级别</title>
-      <link>https://aka-bingo.github.io/tags/%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</link>
-      <pubDate>Wed, 22 May 2019 21:48:03 +0800</pubDate>
-      
-      <guid>https://aka-bingo.github.io/tags/%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</guid>
       <description></description>
     </item>
     
