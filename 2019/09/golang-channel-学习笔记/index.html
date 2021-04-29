@@ -54,11 +54,11 @@
     "accountablePerson" : "BinGo",
     "copyrightHolder" : "BinGo",
     "copyrightYear" : "2019",
-    "datePublished": "2019-09-03 20:49:19 \x2b0800 CST",
-    "dateModified" : "2019-09-03 20:49:19 \x2b0800 CST",
+    "datePublished": "2019-09-03 20:49:19 \u002b0800 CST",
+    "dateModified" : "2019-09-03 20:49:19 \u002b0800 CST",
     "url" : "https:\/\/aka-bingo.github.io\/2019\/09\/golang-channel-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\/",
     "wordCount" : "1598",
-    "keywords" : [ "Golang","源码学习", "BinGo\x27s Blog"]
+    "keywords" : [ "Golang","源码学习", "BinGo\u0027s Blog"]
 }
 </script>
 
@@ -154,14 +154,14 @@
           
           
 
-          <h2 id="heading">简介</h2>
+          <h2 id="简介">简介</h2>
 <p>Channel 是 Go 语言中并发模型的重要组成部分，可以在不同的 goroutine 之间进行数据的传输。</p>
 <p>在日常使用中，channel 可以分为两种：</p>
 <ul>
 <li>无缓冲 channel：在无缓冲 channel 中，数据的发送和读取操作需要同时进行，当只有一个 goroutine A 进行数据的读取（写入）时，需要等待另一个 goroutine B 通过这个 channel 进行数据写入（读取）。在此之前 goroutine A 会一直阻塞，直到 goroutine B来拯救它。</li>
 <li>有缓冲 channel：在有缓冲 channel 中，会自带一个缓冲循环队列。当 goroutine 进行数据读取时，如果缓冲队列中有数据便直接读取，如果没有便阻塞等待其他 goroutine 写入数据。当 goroutine 进行数据写入时，如果缓冲队列没有满，则直接写入数据后离开。如果缓冲队列已满，则需要等待其他 goroutine 来消费缓冲队列，才能继续写入，在此之前只能一直阻塞。</li>
 </ul>
-<h2 id="channel-">Channel 数据结构</h2>
+<h2 id="channel-数据结构">Channel 数据结构</h2>
 <p>首先，我们看一下 Go 语言中 Channel 的数据结构：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">32</span> 
 <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">hchan</span> <span style="color:#66d9ef">struct</span> {
@@ -185,13 +185,13 @@
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">lock</span> <span style="color:#a6e22e">mutex</span>	<span style="color:#75715e">// 原子锁🔒
 </span><span style="color:#75715e"></span>}
 
-<span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span><span style="color:#ae81ff">.7</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">53</span>
+<span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13.7</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">53</span>
 <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">waitq</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">first</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sudog</span>	<span style="color:#75715e">//指向队列头部的 goroutine 指针
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">last</span>  <span style="color:#f92672">*</span><span style="color:#a6e22e">sudog</span>	<span style="color:#75715e">//指向队列尾部的 goroutine 指针
 </span><span style="color:#75715e"></span>}
 </code></pre></div><p>channel 在 Go 语言中是以  <code>hchan</code> 结构体存在的，结构体中的字段如注释所示。其中  <code>sudog</code> 可以认为是 goroutine 的额外封装。</p>
-<h2 id="channel--1">Channel 创建</h2>
+<h2 id="channel-创建">Channel 创建</h2>
 <p>channel 的创建最终都会调用  <code>makechan()</code> 接口，话不多说先上源码：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">71</span>
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">makechan</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">chantype</span>, <span style="color:#a6e22e">size</span> <span style="color:#66d9ef">int</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">hchan</span> {
@@ -272,10 +272,10 @@
 <li>创建的是有缓冲 channel 且缓冲队列元素包含指针：分别为 c 和缓冲队列 c.buf 分配对应大小的内存。</li>
 </ul>
 <p>剩下的操作便是一些上文提到的变量初始化和 Debug 日志输出了。</p>
-<h2 id="channel--2">Channel 发送</h2>
+<h2 id="channel-发送">Channel 发送</h2>
 <p>channel 的发送逻辑实现主要是在 <code>src/runtime/chan.go</code> 中的  <code>chansend()</code> 和 <code>send()</code>，由于实现逻辑比较冗长，情况也比较多，这里就不直接代码骑脸，我们根据不同的情况具体分析：</p>
-<h3 id="-channel-">无缓冲 channel 发送</h3>
-<h4 id="heading-1">直接发送</h4>
+<h3 id="无缓冲-channel-发送">无缓冲 channel 发送</h3>
+<h4 id="直接发送">直接发送</h4>
 <p>前文说过无缓冲 channel 在发送时，如果没有对应接收的 goroutine，就会将当前的发送 goroutine 放入 sendq 队列，所以发送时，第一步会先检查 recvq 队列是否有接收 goroutine 在等待接收， 如果已经有等待接收的 goroutine，便直接调用 <code>send()</code> 进行数据发送：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">190</span>
 <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">recvq</span>.<span style="color:#a6e22e">dequeue</span>(); <span style="color:#a6e22e">sg</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
@@ -284,7 +284,7 @@
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">sg</span>, <span style="color:#a6e22e">ep</span>, <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">unlock</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">lock</span>) }, <span style="color:#ae81ff">3</span>)
 	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
 }
-</code></pre></div><h4 id="heading-2">发送阻塞</h4>
+</code></pre></div><h4 id="发送阻塞">发送阻塞</h4>
 <p>当接收队列为空的时候，程序会检查当前 channel 的缓冲队列是否可用（当然在无缓冲 channel 中答案时肯定不行的），于是会获取当前发送的 goroutine，根据这个 goroutine 封装一个上文提到的 <code>sudog</code> 结构并放入 sendq 队列中并将当前的 goroutine 设置为休眠状态（通过调用 <code>goparkunlock()</code>）。同时也会调用 <code>KeepAlive()</code> 将当前发送的数据（实际上是一个指向当前数据的指针）标记为 reachable 以防止数据在发送前被释放或修改：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">219</span>
 <span style="color:#75715e">// Block on the channel. Some receiver will complete our operation for us.
@@ -295,7 +295,7 @@
 	<span style="color:#a6e22e">mysg</span>.<span style="color:#a6e22e">releasetime</span> = <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
 }
 <span style="color:#75715e">// No stack splits between assigning elem and enqueuing mysg
-</span><span style="color:#75715e"></span><span style="color:#75715e">// on gp.waiting where copystack can find it.
+</span><span style="color:#75715e">// on gp.waiting where copystack can find it.
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">mysg</span>.<span style="color:#a6e22e">elem</span> = <span style="color:#a6e22e">ep</span>
 <span style="color:#a6e22e">mysg</span>.<span style="color:#a6e22e">waitlink</span> = <span style="color:#66d9ef">nil</span>
 <span style="color:#a6e22e">mysg</span>.<span style="color:#a6e22e">g</span> = <span style="color:#a6e22e">gp</span>
@@ -306,12 +306,12 @@
 <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">sendq</span>.<span style="color:#a6e22e">enqueue</span>(<span style="color:#a6e22e">mysg</span>)
 <span style="color:#a6e22e">goparkunlock</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">lock</span>, <span style="color:#a6e22e">waitReasonChanSend</span>, <span style="color:#a6e22e">traceEvGoBlockSend</span>, <span style="color:#ae81ff">3</span>)
 <span style="color:#75715e">// Ensure the value being sent is kept alive until the
-</span><span style="color:#75715e"></span><span style="color:#75715e">// receiver copies it out. The sudog has a pointer to the
-</span><span style="color:#75715e"></span><span style="color:#75715e">// stack object, but sudogs aren&#39;t considered as roots of the
-</span><span style="color:#75715e"></span><span style="color:#75715e">// stack tracer.
+</span><span style="color:#75715e">// receiver copies it out. The sudog has a pointer to the
+</span><span style="color:#75715e">// stack object, but sudogs aren&#39;t considered as roots of the
+</span><span style="color:#75715e">// stack tracer.
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">KeepAlive</span>(<span style="color:#a6e22e">ep</span>)
-</code></pre></div><h3 id="-channel--1">有缓冲 channel 发送</h3>
-<h4 id="heading-3">直接发送</h4>
+</code></pre></div><h3 id="有缓冲-channel-发送">有缓冲 channel 发送</h3>
+<h4 id="直接发送-1">直接发送</h4>
 <p>同无缓冲 channel 一样，发送的第一件事是对接收队列 recvq 进行检查（因为此时如果 recvq 队列有正在等待接收的 goroutine，那么缓冲区的数据一定已经被读取完了），如果有正在等待接收的 goroutine，那么跟上文的无缓冲 channel 是一样的处理。不同的地方在于，如果 recvq 队列为空，程序会继续检查当前缓冲区是否还有空间，如果还有空间，便将发送的数据写入缓冲区，而当前的 goroutine 就可以继续往下执行了：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">197</span>
 <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">qcount</span> &lt; <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">dataqsiz</span> {
@@ -330,9 +330,9 @@
 	<span style="color:#a6e22e">unlock</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">lock</span>)
 	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
 }
-</code></pre></div><h4 id="heading-4">发送阻塞</h4>
+</code></pre></div><h4 id="发送阻塞-1">发送阻塞</h4>
 <p>如果缓冲队列容量已满，那么即使是有缓冲的 channel，也会将当前发送数据的 goroutine 挂起，具体操作和无缓冲 channel 是一致的，这里就不做赘述了，可以自行查看<a href="#%E5%8F%91%E9%80%81%E9%98%BB%E5%A1%9E">无缓冲 channel 发送数据阻塞过程</a>。</p>
-<h3 id="heading-5">唤醒</h3>
+<h3 id="唤醒">唤醒</h3>
 <p>在阻塞状态进行了漫长的等待之后，有一天，一个从远方而来进行接收数据的 goroutine 终于出现，这个时候休眠状态的发送 goroutine 被唤醒，进行数据的收尾及释放：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">243</span>
 <span style="color:#75715e">// someone woke us up.
@@ -392,10 +392,10 @@
 </code></pre></div><p>raceenabled 竞争检测相关这里我们就略过不展开讲了（其实是不会）。有兴趣的同学可以自行查阅，不要忘了学成归来评论分享。</p>
 <p>在分析发送逻辑之前我们要明确两件事：一个是在 <code>send()</code> 中传入的 sg 已经不是发送方的  <code>sudog</code> 结构体而是数据接收队列中的接收方。还有一点是此时数据接收方的 goroutine 必然是休眠状态的。</p>
 <p>在 <code>send()</code> 中程序调用 <code>sendDirect()</code> 将数据 ep 的内容<!-- raw HTML omitted --><strong>直接拷贝</strong><!-- raw HTML omitted -->到接收 goroutine 的内存空间中，然后回收指向该内存的指针，同时也会将当前的 <code>sudog</code> 设置为接收方 goroutine 唤醒后的参数。最后通过调用 <code>goready()</code> 唤醒休眠的接收 goroutine 来完成数据传输的过程。</p>
-<h2 id="channel--3">Channel 接收</h2>
+<h2 id="channel-接收">Channel 接收</h2>
 <p>channel 的接收逻辑同样在 <code>src/runtime/chan.go</code> 中，主要也是 <code>chanrecv()</code> 和 <code>recv()</code> 两个接口。接收逻辑大体上和发送十分类似，~~甚至可以理解为仅仅是数据流动的方向改变了而已。~~主要的差异体现在数据的交换逻辑。</p>
-<h3 id="-channel--2">无缓冲 channel 接收</h3>
-<h4 id="heading-6">直接接收</h4>
+<h3 id="无缓冲-channel-接收">无缓冲 channel 接收</h3>
+<h4 id="直接接收">直接接收</h4>
 <p>无缓冲 channel 在进行数据接收时，如果发送队列 sendq 已经有等待的发送 goroutine，那么当前 goroutine 会直接和这个发送者进行数据拷贝：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">473</span>
 <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">sendq</span>.<span style="color:#a6e22e">dequeue</span>(); <span style="color:#a6e22e">sg</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> { 	<span style="color:#75715e">//如果数据发送等待队列有正在等待的 goroutine
@@ -406,7 +406,7 @@
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">recv</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">sg</span>, <span style="color:#a6e22e">ep</span>, <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">unlock</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">lock</span>) }, <span style="color:#ae81ff">3</span>) <span style="color:#75715e">//数据接收处理
 </span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>, <span style="color:#66d9ef">true</span>
 }
-</code></pre></div><h4 id="heading-7">接收阻塞</h4>
+</code></pre></div><h4 id="接收阻塞">接收阻塞</h4>
 <p>当发送队列 sendq 上没有正在等待发送数据的 goroutine 时，由于不存在缓冲队列，当前 goroutine 需要包装成上文提到的 <code>sudog</code> 结构体并插入到数据接收等待队列 recvq 中。之后便是调用 <code>goparkunlock()</code> 让当前 goroutine 进入漫长的等待了：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// no sender available: block on this channel.
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">gp</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">getg</span>()
@@ -416,7 +416,7 @@
 	<span style="color:#a6e22e">mysg</span>.<span style="color:#a6e22e">releasetime</span> = <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
 }
 <span style="color:#75715e">// No stack splits between assigning elem and enqueuing mysg
-</span><span style="color:#75715e"></span><span style="color:#75715e">// on gp.waiting where copystack can find it.
+</span><span style="color:#75715e">// on gp.waiting where copystack can find it.
 </span><span style="color:#75715e"></span><span style="color:#a6e22e">mysg</span>.<span style="color:#a6e22e">elem</span> = <span style="color:#a6e22e">ep</span>
 <span style="color:#a6e22e">mysg</span>.<span style="color:#a6e22e">waitlink</span> = <span style="color:#66d9ef">nil</span>
 <span style="color:#a6e22e">gp</span>.<span style="color:#a6e22e">waiting</span> = <span style="color:#a6e22e">mysg</span>
@@ -427,8 +427,8 @@
 <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">recvq</span>.<span style="color:#a6e22e">enqueue</span>(<span style="color:#a6e22e">mysg</span>)
 <span style="color:#a6e22e">goparkunlock</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">lock</span>, <span style="color:#a6e22e">waitReasonChanReceive</span>, <span style="color:#a6e22e">traceEvGoBlockRecv</span>, <span style="color:#ae81ff">3</span>)
 </code></pre></div><p>和发送略微不同的是，由于数据接收操作并没有数据需要保护，所以并不需要类似 <code>KeepAlive()</code> 这样的接口来对数据进行安全锁定。</p>
-<h3 id="-channel--3">有缓冲 channel 接收</h3>
-<h4 id="heading-8">直接接收</h4>
+<h3 id="有缓冲-channel-接收">有缓冲 channel 接收</h3>
+<h4 id="直接接收-1">直接接收</h4>
 <p>当 goroutine 从某个有缓冲 channel 接收数据时，依然会对发送队列 sendq 进行检查，如果队列中有等待发送的对象，那么表示当前有许多数据可以接收（满容量缓冲队列+发送等待队列），接收的 goroutine 会调用 <code>recv()</code> 接口进行数据交接。但是！请不要误会数据接收的对象是等待队列中的发送者。channel 的调度遵循 FIFO 原则，不会因为你是一个正在等待的 goroutine 而优先处理。然而具体是如何接收数据，在此先买个关子。</p>
 <p>倘若发送队列 sendq 中没有等待的发送对象，不要慌，我们还有缓冲池。当缓冲队列大小不为0时，说明仍有数据可供接收，当前的 goroutine 会调用 <code>typedmemmove()</code> 将缓冲区的数据拷贝到自己的内存中：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">482</span>
@@ -451,9 +451,9 @@
 	<span style="color:#a6e22e">unlock</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">lock</span>)
 	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>, <span style="color:#66d9ef">true</span>
 }
-</code></pre></div><h4 id="heading-9">接收阻塞</h4>
+</code></pre></div><h4 id="接收阻塞-1">接收阻塞</h4>
 <p>当缓冲队列中也没有可接收数据时，即使是一个有缓冲的 channel，goroutine 也要乖乖进入阻塞状态，这里的逻辑和上文中无缓冲 channel 接收阻塞逻辑是一样的，可以自行回顾<a href="#%E6%8E%A5%E6%94%B6%E9%98%BB%E5%A1%9E">无缓冲 channel 接收数据阻塞过程</a></p>
-<h3 id="heading-10">唤醒</h3>
+<h3 id="唤醒-1">唤醒</h3>
 <p>阻塞状态的接收 goroutine 在漫长的等待之后被唤醒，这个时候它会发现数据已经拷贝到自己的内存中（类似于睡了一天然后醒来发现一天的工资已经发到银行卡里那种感觉），需要自己做的仅仅是数据的整理检查等收尾工作：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#a6e22e">go1</span><span style="color:#ae81ff">.13</span>:<span style="color:#a6e22e">src</span><span style="color:#f92672">/</span><span style="color:#a6e22e">runtime</span><span style="color:#f92672">/</span><span style="color:#66d9ef">chan</span>.<span style="color:#66d9ef">go</span>:<span style="color:#ae81ff">526</span>
 <span style="color:#75715e">// someone woke us up
@@ -522,14 +522,14 @@
 <li>将阻塞的发送 goroutine 中的数据拷贝到缓冲队列队尾中。</li>
 </ol>
 <p>完成了数据交接后，调用 <code>goready()</code> 轻轻唤醒阻塞的数据发送 goroutine，深藏功与名。</p>
-<h2 id="heading-11">总结</h2>
+<h2 id="总结">总结</h2>
 <ul>
 <li>许多文章将 channel 类比为“管道”之类的工具，但在了解 channel 的完整调度逻辑后，我更希望将其比作一个高速公路中的货物中转站。来来往往的货车司机（goroutine）在此装货卸货，有无仓库（缓冲）决定了货车司机需不需要在中转站逗留等待，迟到的货车司机负责货物的装载或拆卸（数据传输）并通知对应的司机完成货物交接。</li>
 <li>Go 基于 CSP 模型中的 process 和 channel 的概念设计了基于 channel 的并发模型并提倡“通过通信共享内存，而不是通过共享内存来通信”。然而这更多是一种行为上的概念，实际实现中还是无法避免地共享了 hchan 甚至缓冲 buf 等数据结构。唯一不同的是当两个 goroutine 直接交换数据时，他们是可以直接操作对方的内存空间（通过 <code>sendDirect()</code> 和 <code>recvDirect()</code> 两个方法），避免了数据的多次拷贝和额外的锁操作。</li>
 <li>为了遵循 FIFO 原则，Go 语言用两个指针加数组实现了循环队列，实际上这大概也是队列的最佳实现方式了 &hellip; &hellip; 吧？</li>
 <li>channel 使用 mutex 来保障它是 goroutine 安全的，但是作为一个对性能要求极高的数据结构，我们可以发现解锁操作并不一定是在当前加锁的处理函数中。它通过传递解锁接口 <code>unlockf()</code> 来确保对数据修改结束后第一时间进行锁的释放，从而实现锁的覆盖时间是最短的。</li>
 </ul>
-<h2 id="heading-12">参考资料</h2>
+<h2 id="参考资料">参考资料</h2>
 <p><a href="https://speakerdeck.com/kavya719/understanding-channels">diving-deep-into-the-golang-channels</a></p>
 
     </div>
@@ -599,14 +599,15 @@
     <div class="copyright">
         &copy;
         
-        <span itemprop="copyrightYear">2018 - 2020</span>
+        <span itemprop="copyrightYear">2018 - 2021</span>
         
          
             <span class="author" itemprop="copyrightHolder"><a href="https://aka-bingo.github.io">BinGo</a> | </span> 
          
 
          
-		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+		<span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+
     </div>
 </footer>
 

@@ -6,11 +6,7 @@
     <description>Recent content in 数据库 on BinGo&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 17 Sep 2019 23:45:08 +0800</lastBuildDate>
-    
-	<atom:link href="https://aka-bingo.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 17 Sep 2019 23:45:08 +0800</lastBuildDate><atom:link href="https://aka-bingo.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MySQL 同步复制的思考</title>
       <link>https://aka-bingo.github.io/2019/09/mysql-%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6%E7%9A%84%E6%80%9D%E8%80%83/</link>
@@ -60,7 +56,7 @@ InnoDB 中的 MVCC InnoDB 中的 MVCC，是通过在每行记录后保存两个�
  不可重复读指的是一个事务内对同一数据的多次读取的情况。 幻读指的是事务的读取范围被其他事务改变的情况。  隔离级别 在 SQL 标准中定义了四种隔离级别，每一种级别都规定了一个事务中所做的修改，哪些在事务内和事务间是可见或不可见的。较低级的隔离级别一般系统的开销也更低，可以支撑更高的并发，但是对上层应用的数据读取可能会造成影响。
 READ UNCOMMITTED 未提交读 在 READ UNCOMMITTED 隔离级别下，事务可以对其他事务中尚未提交的数据修改进行读取。这个级别会导致很多问题，比如脏读，在实际应用中一般很少使用。
 READ COMMITTED 提交读 在 READ COMMITTED 隔离级别下，一个事务从开始直到提交之前，所做的任何修改对其他事务都是不可见的。该隔离级别避免了脏读的发生，但是一个事务内的查询，依然有可能获得不同的结果（数据被其他事务修改），导致产生不可重复读。
-REPEATABLE READ 可重复读 REPEATABLE READ 解决了脏读&amp;amp;幻读的问题，该隔离级别保证了在同一个事务中多次读取同样的记录结果是一致的。但是该隔离级别依然会导致幻读的问题。
+REPEATABLE READ 可重复读 REPEATABLE READ 解决了脏读&amp;amp;不可重复读的问题，该隔离级别保证了在同一个事务中多次读取同样的记录结果是一致的。但是该隔离级别依然会导致幻读的问题。
 PS：在 SQL 标准中，REPEATABLE READ 无法解决幻读的问题，但是 MySQL 中 InnoDB 和 XtraDB 存储引擎通过多版本并发控制（ MVCC，MultiVersion Concurrency Control ）解决了幻读的问题。</description>
     </item>
     
