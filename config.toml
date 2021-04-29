@@ -56,7 +56,7 @@ RSSLink = "index"
     home_mode = "" # post or other
 
     google_verification = ""
-   
+
     description = "" # site description
     keywords = "" # site keywords
 
