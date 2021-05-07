@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Golang on BinGo&#39;s Blog</title>
-    <link>https://aka-bingo.github.io/categories/golang/</link>
+    <link>https://huangyubin.xyz/categories/golang/</link>
     <description>Recent content in Golang on BinGo&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Sep 2019 20:49:19 +0800</lastBuildDate><atom:link href="https://aka-bingo.github.io/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Sep 2019 20:49:19 +0800</lastBuildDate><atom:link href="https://huangyubin.xyz/categories/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Golang Channel 学习笔记</title>
-      <link>https://aka-bingo.github.io/2019/09/golang-channel-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://huangyubin.xyz/2019/09/golang-channel-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Tue, 03 Sep 2019 20:49:19 +0800</pubDate>
       
-      <guid>https://aka-bingo.github.io/2019/09/golang-channel-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://huangyubin.xyz/2019/09/golang-channel-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>简介 Channel 是 Go 语言中并发模型的重要组成部分，可以在不同的 goroutine 之间进行数据的传输。
 在日常使用中，channel 可以分为两种：
  无缓冲 channel：在无缓冲 channel 中，数据的发送和读取操作需要同时进行，当只有一个 goroutine A 进行数据的读取（写入）时，需要等待另一个 goroutine B 通过这个 channel 进行数据写入（读取）。在此之前 goroutine A 会一直阻塞，直到 goroutine B来拯救它。 有缓冲 channel：在有缓冲 channel 中，会自带一个缓冲循环队列。当 goroutine 进行数据读取时，如果缓冲队列中有数据便直接读取，如果没有便阻塞等待其他 goroutine 写入数据。当 goroutine 进行数据写入时，如果缓冲队列没有满，则直接写入数据后离开。如果缓冲队列已满，则需要等待其他 goroutine 来消费缓冲队列，才能继续写入，在此之前只能一直阻塞。  Channel 数据结构 首先，我们看一下 Go 语言中 Channel 的数据结构：
